@@ -56,7 +56,7 @@ class InstallCommand extends Command
 
 		$output->writeln('<comment>Vamos configurar a sua primeira conta Pix!</comment>');
 		($this->getApplication()->find('account:create'))->run($input, $output);
-
+ 
 		$output->writeln('<comment>Não esqueça de configurar o domínio em seu servidor Web apontando para a pasta `/public`</comment>');
 		$output->writeln(sprintf('<comment>Seu app foi configurado com sucesso! Acesse %s para usar.</comment>',$domain));
 		return Command::SUCCESS;

@@ -1,14 +1,16 @@
 <?php
 namespace App\Console\Commands;
 
+use Exception;
 use Piggly\Pix\Parser;
+use Piggly\Pix\Reader;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Question\Question;
 
 class CreateAccountCommand extends Command 
 {
@@ -23,75 +25,100 @@ class CreateAccountCommand extends Command
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$helper        = $this->getHelper('question');
-		$qMerchantName = new Question('<info>Entre com o Nome do Titular da Conta</info>: ', null);
-		$qMerchantCity = new Question('<info>Entre com a Cidade do Titular da Conta</info>: ', null);
-		$qKeyType      = (new ChoiceQuestion('<info>Entre com o Tipo da Chave</info> [cpf]: ', ['cpf', 'cnpj', 'telefone', 'email', 'aleatoria'], 0))->setErrorMessage('A chave `%s` é inválida.');
-		$qKey          = new Question('<info>Entre com a Chave Pix</info>: ', null);
-		$qLabel        = new Question('<info>Rotule esta conta</info>: ', 'Conta Principal');
-		
-		$qMerchantName->setValidator( function ($answer) {
-			if ( empty( $answer ) )
-			{ throw new \RuntimeException('O Nome do Titular não pode ser vazio.'); }
+		$helper   = $this->getHelper('question');
+		$qExtract = new ConfirmationQuestion('<info>Quer extrair os dados de um código pix</info>? <comment>[no]</comment> ', false);
+		$extract  = $helper->ask($input, $output, $qExtract);
 
-			return $answer;
-		});
-
-		$qMerchantCity->setValidator( function ($answer) {
-			if ( empty( $answer ) )
-			{ throw new \RuntimeException('O Nome da Cidade não pode ser vazio.'); }
-
-			return $answer;
-		});
-
-		$qKeyType->setValidator( function ($answer) {
-			if ( is_null( $answer ) || $answer === '' )
-			{ throw new \RuntimeException('O Tipo da Chave não pode ser vazio.'); }
-
-			return $answer;
-		});
-
-		$qKey->setValidator( function ($answer) {
-			if ( empty( $answer ) )
-			{ throw new \RuntimeException('O Chave Pix não pode ser vazia.'); }
-
-			return $answer;
-		});
-
-		$qMerchantName->setMaxAttempts(2);
-		$qMerchantCity->setMaxAttempts(2);
-		$qKeyType->setMaxAttempts(2);
-		$qKey->setMaxAttempts(2);
-
-		$merchantName = $helper->ask($input, $output, $qMerchantName);
-		$merchantCity = $helper->ask($input, $output, $qMerchantCity);
-		$keyType = $helper->ask($input, $output, $qKeyType);
-		$key = $helper->ask($input, $output, $qKey);
-		$label = $helper->ask($input, $output, $qLabel);
-
-		switch ( $keyType )
+		if ( $extract )
 		{
-			case 0:
-			case "0":
-				$keyType = Parser::KEY_TYPE_DOCUMENT;
-				break;
-			case 1:
-			case "1":
-				$keyType = Parser::KEY_TYPE_DOCUMENT;
-				break;
-			case 2:
-			case "2":
-				$keyType = Parser::KEY_TYPE_PHONE;
-				break;
-			case 3:
-			case "3":
-				$keyType = Parser::KEY_TYPE_EMAIL;
-				break;
-			case 4:
-			case "4":
-				$keyType = Parser::KEY_TYPE_RANDOM;
-				break;
+			$qPixCode = new Question('<info>Informe o código Pix</info>: ', null);
+
+			$qPixCode->setValidator( function ($answer) {
+				if ( empty( $answer ) )
+				{ throw new \RuntimeException('O código Pix não pode ser vazio.'); }
+	
+				return $answer;
+			});
+
+			$qPixCode->setMaxAttempts(2);
+			$pixCode = $helper->ask($input, $output, $qPixCode);
+
+			$reader = new Reader($pixCode);
+
+			$merchantName = $reader->getMerchantName();
+			$merchantCity = $reader->getMerchantCity();
+			$key = $reader->getPixKey();
+			$keyType = Parser::getKeyType($key);
+
+			$output->writeln('<comment>Os dados foram extraídos</comment>');
+			$output->writeln(sprintf('<info>Nome do Titular</info>: %s', $merchantName));
+			$output->writeln(sprintf('<info>Cidade</info>: %s', $merchantCity));
+			$output->writeln(sprintf('<info>Tipo da Chave</info>: %s', Parser::getAlias($keyType)));
+			$output->writeln(sprintf('<info>Chave</info>: %s', $key));
 		}
+		else 
+		{
+			$qMerchantName = new Question('<info>Entre com o Nome do Titular</info>: ', null);
+			$qMerchantCity = new Question('<info>Entre com a Cidade associada a conta</info>: ', null);
+			$qKeyType      = (new ChoiceQuestion('<info>Entre com o Tipo da Chave</info> [cpf]: ', ['cpf', 'cnpj', 'telefone', 'email', 'aleatoria'], 0))->setErrorMessage('A chave `%s` é inválida.');
+			$qKey          = new Question('<info>Entre com a Chave Pix</info>: ', null);
+			
+			$qMerchantName->setValidator( function ($answer) {
+				if ( empty( $answer ) )
+				{ throw new RuntimeException('O Nome do Titular não pode ser vazio.'); }
+	
+				return $answer;
+			});
+	
+			$qMerchantCity->setValidator( function ($answer) {
+				if ( empty( $answer ) )
+				{ throw new RuntimeException('O Nome da Cidade não pode ser vazio.'); }
+	
+				return $answer;
+			});
+	
+			$qKey->setValidator( function ($answer) {
+				if ( empty( $answer ) )
+				{ throw new RuntimeException('A Chave Pix não pode ser vazia.'); }
+	
+				return $answer;
+	
+				return $answer;
+			});
+	
+			$qMerchantName->setMaxAttempts(2);
+			$qMerchantCity->setMaxAttempts(2);
+			$qKeyType->setMaxAttempts(2);
+			$qKey->setMaxAttempts(2);
+
+			$merchantName = $helper->ask($input, $output, $qMerchantName);
+			$merchantCity = $helper->ask($input, $output, $qMerchantCity);
+			$keyType = $helper->ask($input, $output, $qKeyType);
+
+			$output->writeln($keyType);
+			switch ( $keyType )
+			{
+				case 'cpf':
+				case 'cnpj':
+					$keyType = Parser::KEY_TYPE_DOCUMENT;
+					break;
+				case 'telefone':
+					$keyType = Parser::KEY_TYPE_PHONE;
+					break;
+				case 'email':
+					$keyType = Parser::KEY_TYPE_EMAIL;
+					break;
+				case 'aleatoria':
+					$keyType = Parser::KEY_TYPE_RANDOM;
+					break;
+			}
+
+			$key = Parser::parse($keyType, $helper->ask($input, $output, $qKey));
+			Parser::validate($keyType, $key);
+		}
+		
+		$qLabel = new Question('<info>Rotule esta conta</info>: ', 'Conta Principal');
+		$label  = $helper->ask($input, $output, $qLabel);
 
 		$accountsFile = dirname(dirname(dirname(__FILE__))) . '/app/config/accounts.php';
 

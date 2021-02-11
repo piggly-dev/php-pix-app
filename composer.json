@@ -4,7 +4,7 @@
     "type": "project",
     "require": {
         "php": "^7.4",
-        "piggly/php-pix": "^1.0.4",
+        "piggly/php-pix": "^1.1.0",
         "vlucas/phpdotenv": "^5.3",
         "symfony/console": "^5.2"
     },

@@ -24,9 +24,9 @@ $status = filter_input( INPUT_GET, 'status', FILTER_SANITIZE_STRING );
 		<div class="alert alert-primary" role="alert"><?=urldecode($status);?></div>
 		<?php endif; ?>
 		<label for="username" name="username" class="visually-hidden">Usuário</label>
-		<input type="text" id="username" name="username" class="form-control" value="pix" placeholder="Usuário" required autofocus>
+		<input type="text" id="username" name="username" class="form-control" placeholder="Usuário" required autofocus>
 		<label for="password" name="password" class="visually-hidden">Senha</label>
-		<input type="password" id="password" name="password" class="form-control" value="123456" placeholder="Senha" required>
+		<input type="password" id="password" name="password" class="form-control" placeholder="Senha" required>
 		<div class="checkbox mb-3"> 
 			<label><input type="checkbox" name="remember" value="remember-me"> Lembrar-me</label>
 		</div>
