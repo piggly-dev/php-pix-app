@@ -1,0 +1,25 @@
+{
+    "name": "piggly/php-pix-app",
+    "description": "Um projeto simples de uma aplicação para gerar os pix para pagamento de forma mais rápida e prática.",
+    "type": "project",
+    "require": {
+        "php": "^7.4",
+        "piggly/php-pix": "^1.0.4",
+        "vlucas/phpdotenv": "^5.3",
+        "symfony/console": "^5.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\Core\\": "app/core",
+            "App\\Console\\Commands\\": "bin/Commands"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Caique Araujo",
+            "email": "caique@piggly.com.br"
+        }
+    ],
+    "minimum-stability": "stable"
+}

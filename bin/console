@@ -1,0 +1,24 @@
+#!/usr/bin/env php
+<?php
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+use App\Console\Commands\CreateUserCommand;
+use App\Console\Commands\DeleteUserCommand;
+use App\Console\Commands\ListUserCommand;
+use App\Console\Commands\ChangePasswordCommand;
+use App\Console\Commands\CreateAccountCommand;
+use App\Console\Commands\DeleteAccountCommand;
+use App\Console\Commands\ListAccountCommand;
+use App\Console\Commands\InstallCommand;
+
+$app = new Application();
+$app->add(new CreateUserCommand());
+$app->add(new DeleteUserCommand());
+$app->add(new ListUserCommand());
+$app->add(new ChangePasswordCommand());
+$app->add(new CreateAccountCommand());
+$app->add(new DeleteAccountCommand());
+$app->add(new ListAccountCommand());
+$app->add(new InstallCommand());
+$app->run();
