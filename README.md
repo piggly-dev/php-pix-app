@@ -1,5 +1,7 @@
 # Gere códigos Pix de um jeito fácil, rápido e prático
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/piggly/php-pix-app.svg?style=flat-square)](https://packagist.org/packages/piggly/php-pix-app) [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE) 
+
 Com a chegada do Pix muitas lojas físicas começaram a se adaptar ao novo movimento. Mas, ainda tem um problema: *é complicado gerar um Pix*. Alguns de nossos clientes, por exemplo, precisam que vários colaboradores diferentes gerem um Pix. Mas, claro, nem todos eles podem acessar o app do banco para gerar um pix.
 
 Esse projeto surge para resolver esse problema. Ele é uma micro interface que gera códigos Pix em **QR Code** e no formato **Pix Copia & Cola**. Veja como ela funciona:
@@ -51,11 +53,13 @@ Para implementá-lo nesta aplicação, utilizamos a nossa própria biblioteca [p
 * **QR Code** inválido;
 * **Pix Copia & Cola** inválido.
 
-Sugerimos que você abra uma `issue` em nossa biblioteca pix, [clicando aqui](https://github.com/piggly-dev/php-pix/issues). Assim organizamos melhor a funcionalidade de cada uma das coisas.
+Sugerimos que você abra uma `issue` em nossa biblioteca pix, [clicando aqui](https://github.com/piggly-dev/php-pix/issues) (lembre-se de seguir as instruções ao criar uma issue). Assim organizamos melhor a funcionalidade de cada uma das coisas.
 
 ## Instalação
 
 Essa aplicação pode ser criada via **Composer** utilizando o seguinte comando `composer create-project piggly/php-pix-app pix`.
+
+Se você prefir você também pode clonar esse repositório com o comando `git clone https://github.com/piggly-dev/php-pix-app.git` ou fazer o download da última versão [clicando aqui](https://github.com/piggly-dev/php-pix-app/archive/master.zip).
 
 ### Instalação guiada
 
@@ -80,7 +84,7 @@ Se você preferir ou não tiver acesso ao `terminal` da sua máquina, poderá fa
 * `HTTPS` escreva `true` se estiver usando https e `false` quando não;
 * `SITE_NAME` escreva (entre aspas) o nome para a aplicação. Por exemplo: `"Pix por Piggly"`;
 * `SESSION_NAME` escreva (sem espaços) o nome para a sessão da aplicação. Por exemplo: `pix_piggly_lab`;
-* `SECRET_KEY` crie uma chave aleatória com 32 caracteres ou mais e coloque aqui. Por exemplo: `XnPvo6Wu3RAAP6i72poT0FH0pIXjWwCwOSA9Taenbs4="`;
+* `SECRET_KEY` crie uma chave aleatória com 32 caracteres ou mais e coloque aqui. Por exemplo: `"XnPvo6Wu3RAAP6i72poT0FH0pIXjWwCwOSA9Taenbs4="`;
 * `BOOTSTRAP_CDN` escreva `true` se deseja utilizar o CDN do Bootstrap e `false` se não. Recomendamos `false` quando o acesso for interno (dentro de uma empresa), eles podem bloquear domínios desconhecidos e o `.css` externo não irá funcionar; Quando não for o caso, utilize `true` a política de cache será mais eficiente.
 
 Depois, é a hora de configurar os usuário no arquivo `/app/config/users.php`, basta seguir o formato:
