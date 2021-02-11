@@ -13,7 +13,7 @@ class ListAccountCommand extends Command
 	protected function configure ()
 	{
 		$this
-			->setDescription('Lista todos as contas Pix.')
+			->setDescription('Lista todas as contas Pix.')
 			->setHelp('Esse comando auxilia você a visualizar todas contas Pix.');
 	}
 

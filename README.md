@@ -2,9 +2,9 @@
 
 Com a chegada do Pix muitas lojas físicas começaram a se adaptar ao novo movimento. Mas, ainda tem um problema: *é complicado gerar um Pix*. Alguns de nossos clientes, por exemplo, precisam que vários colaboradores diferentes gerem um Pix. Mas, claro, nem todos eles podem acessar o app do banco para gerar um pix.
 
-Se você apreciar a função desta aplicação e quiser apoiar este trabalho, sinta-se livre para fazer qualquer doação para a chave aleatória Pix `aae2196f-5f93-46e4-89e6-73bf4138427b` ❤.
-
 Esse projeto surge para resolver esse problema. Ele é uma micro interface que gera códigos Pix em **QR Code** e no formato **Pix Copia & Cola**. Veja como ela funciona:
+
+> Se você apreciar a função desta aplicação e quiser apoiar este trabalho, sinta-se livre para fazer qualquer doação para a chave aleatória Pix `aae2196f-5f93-46e4-89e6-73bf4138427b` ❤.
 
 ## Sobre a aplicação
 
@@ -19,6 +19,7 @@ Legal, não? O intuito aqui é ser simples. Por essa razão, não utilizamos fra
 * Se você quer gerar códigos Pix de uma maneira simples, fácil e rápido;
 * Você quer que terceiros gerem um código Pix para você;
 * Você não quer ficar entrando no app do Banco (e fazer um processo chato) o tempo todo para gerar novos Pix;
+* Se você quer gerar os Pix sem plataformas/apis de terceiros que poderão cobrar taxas por isso.
 * Se você quer começar a vender com Pix de um jeito simples, fácil e rápido.
 
 ### Quais são os requisitos mínimos?
@@ -31,13 +32,13 @@ Entre em contato com a gente pelo e-mail [dev@piggly.com.br](mailto:dev@piggly.c
 
 ### Os usuários da aplicação
 
-Só existe uma razão para nossa aplicação ter usuário: _previnir acesso deliberado_. As informações da aplicação não são sensíveis. São extremamente simples e utilizadas apenas para gerar os códigos Pix. Por essa razão o sistema de login e usuários é tão simples quanto. Apenas uma `array` com uma lista de usuários/senhas. 
+Só existe uma razão para nossa aplicação ter usuários: _previnir acesso deliberado_. As informações da aplicação não são sensíveis. São extremamente simples e utilizadas apenas para gerar os códigos Pix. Por essa razão o sistema de login e usuários é tão simples quanto. Apenas uma `array` com uma lista de usuários/senhas. 
 
 ### As contas Pix da aplicação
 
 Também representam uma `array` com todas as contas cadastradas, que poderão ser selecionadas durante a geração dos códigos Pix. Nada demais e, novamente, não são informações sensíveis, logo não há com o que se preocupar.
 
-### Mas... eu sou "desconfiado"
+### Como aumentar a segurança?
 
 Neste caso, recomendando que crie as suas contas Pix na aplicação com as chaves aleatórias. Assim, você não expõe qualquer dado "sensível" como: e-mail, telefone, CPF ou CNPJ.
 
@@ -58,7 +59,7 @@ Essa aplicação pode ser criada via **Composer** utilizando o seguinte comando 
 
 ### Instalação guiada
 
-Para facilitar a configuração do app. Habilitamos alguns comandos que ajudarão você a configurá-lo. Para isso, você precisa ter acesso ao `terminal` da sua máquina. Futuramente iremos implementar uma interface para essas configurações, mas por hora isso basta.
+Para facilitar a configuração desta aplicação. Habilitamos alguns comandos que ajudarão você a configurá-la. Para isso, você precisa ter acesso ao `terminal` da sua máquina. Futuramente iremos implementar uma interface para essas configurações, mas por hora isso basta.
 
 Vá para a pasta raiz da aplicação e execute o comando `php bin/console app:install`. Basta seguir todas as orientações na tela. Abaixo, a listagem de todos os comandos disponíveis:
 
@@ -69,7 +70,7 @@ Vá para a pasta raiz da aplicação e execute o comando `php bin/console app:in
 * `php bin/console user:list` Lista todos os usuários.
 * `php bin/console account:create` Cria uma nova conta Pix.
 * `php bin/console account:delete` Remove uma conta Pix.
-* `php bin/console account:list` Lista todos as contas Pix.
+* `php bin/console account:list` Lista todas as contas Pix.
 
 ### Instalação manual
 
@@ -80,11 +81,11 @@ Se você preferir ou não tiver acesso ao `terminal` da sua máquina, poderá fa
 * `SITE_NAME` escreva (entre aspas) o nome para a aplicação. Por exemplo: `"Pix por Piggly"`;
 * `SESSION_NAME` escreva (sem espaços) o nome para a sessão da aplicação. Por exemplo: `pix_piggly_lab`;
 * `SECRET_KEY` crie uma chave aleatória com 32 caracteres ou mais e coloque aqui. Por exemplo: `XnPvo6Wu3RAAP6i72poT0FH0pIXjWwCwOSA9Taenbs4="`;
-* `BOOTSTRAP_CDN` escreva `true` se deseja utilizar o CDN do Bootstrap e `true` se não. Recomendamos `false` quando o acesso for interno (dentro de uma empresa), eles podem bloquear domínios desconhecidos e o `.css` externo não irá funcionar; Quando não for o caso, utilize `true` a política de cache será mais eficiente.
+* `BOOTSTRAP_CDN` escreva `true` se deseja utilizar o CDN do Bootstrap e `false` se não. Recomendamos `false` quando o acesso for interno (dentro de uma empresa), eles podem bloquear domínios desconhecidos e o `.css` externo não irá funcionar; Quando não for o caso, utilize `true` a política de cache será mais eficiente.
 
 Depois, é a hora de configurar os usuário no arquivo `/app/config/users.php`, basta seguir o formato:
 
-```[php]
+```php
 <?php
 
 return [ 
@@ -98,7 +99,7 @@ return [
 
 E, por fim, configure as contas pix no arquivo `/app/config/accounts.php`, basta seguir o formato:
 
-```[php]
+```php
 <?php
 
 return [

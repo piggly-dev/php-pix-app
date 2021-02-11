@@ -45,7 +45,7 @@ class CreateAccountCommand extends Command
 		});
 
 		$qKeyType->setValidator( function ($answer) {
-			if ( empty( $answer ) )
+			if ( is_null( $answer ) || $answer === '' )
 			{ throw new \RuntimeException('O Tipo da Chave não pode ser vazio.'); }
 
 			return $answer;
