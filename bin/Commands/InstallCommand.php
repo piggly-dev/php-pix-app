@@ -42,9 +42,9 @@ class InstallCommand extends Command
 		
 		$env  = sprintf("DOMAIN=%s\n", $domain);
 		$env .= sprintf("HTTPS=%s\n", var_export($https,true));
-		$env .= sprintf("SITE_NAME=%s\n", $helper->ask($input, $output, $qSiteN));
+		$env .= sprintf("SITE_NAME=\"%s\"\n", $helper->ask($input, $output, $qSiteN));
 		$env .= sprintf("SESSION_NAME=%s\n", $helper->ask($input, $output, $qSessionN));
-		$env .= sprintf("SECRET_KEY=%s\n", base64_encode(random_bytes(32)));
+		$env .= sprintf("SECRET_KEY=\"%s\"\n", base64_encode(random_bytes(32)));
 		$env .= sprintf("BOOTSTRAP_CDN=%s\n", var_export($helper->ask($input, $output, $qBootCDN),true));
 
 		// $output->writeln(dirname(dirname(dirname(__FILE__))) . '/app/config/users.php');
